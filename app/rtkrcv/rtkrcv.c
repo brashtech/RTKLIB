@@ -1223,6 +1223,8 @@ static void cmd_set(char **args, int narg, vt_t *vt)
         return;
     }
     getsysopts(&prcopt,solopt,&filopt);
+    /* Can't specify most options for second solution, copy from first. */
+    memcpy(&solopt[1],&solopt[0],sizeof(solopt_t));
     
     vt_printf(vt,"option %s changed.",opt->name);
     if (strncmp(opt->name,"console",7)) {
@@ -1250,6 +1252,8 @@ static void cmd_load(char **args, int narg, vt_t *vt)
         return;
     }
     getsysopts(&prcopt,solopt,&filopt);
+    /* Can't specify most options for second solution, copy from first. */
+    memcpy(&solopt[1],&solopt[0],sizeof(solopt_t));
     
     if (!loadopts(file,rcvopts)) {
         vt_printf(vt,"no options file: %s\n",file);
@@ -1661,6 +1665,8 @@ int main(int argc, char **argv)
         fprintf(stderr,"no options file: %s. defaults used\n",file);
     }
     getsysopts(&prcopt,solopt,&filopt);
+     /* Can't specify most options for second solution, copy from first. */
+    memcpy(&solopt[1],&solopt[0],sizeof(solopt_t));
     
     /* read navigation data */
     if (!readnav(NAVIFILE,&svr.nav)) {
